@@ -31,8 +31,6 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 
-app.MapGet("/test", () => "Hello World!");
-
 app.MapGet("/sw-characters", (SwRepository db, string name = "", string faction = "", string homeland = "", string species = "") =>
     db.GetCharacters(name, faction, homeland, species));
 
