@@ -6,11 +6,11 @@ using Xunit.Abstractions;
 
 namespace IntTests;
 
-public class UnitTest1 : IClassFixture<WebApplicationFactory<Program>>
+public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
     readonly WebApplicationFactory<Program> _factory;
     readonly ITestOutputHelper _output; // For testing in console
-    public UnitTest1(WebApplicationFactory<Program> factory, ITestOutputHelper output)
+    public IntegrationTests(WebApplicationFactory<Program> factory, ITestOutputHelper output)
     {
         _factory = factory;
         this._output = output;
@@ -46,7 +46,7 @@ public class UnitTest1 : IClassFixture<WebApplicationFactory<Program>>
     }
 
     [Fact]
-    public async Task GetCharacterById()
+    public async Task T0_GetCharacterById()
     {
         var client = _factory.CreateClient();
         SwCharacter? character = await GetOneCharacter(client);
@@ -155,7 +155,7 @@ public class UnitTest1 : IClassFixture<WebApplicationFactory<Program>>
         var responseAdd = await client.PostAsJsonAsync("/sw-characters", character);
         var addedCharacter = await responseAdd.Content.ReadFromJsonAsync<SwCharacter>();
         var responseAdd2 = await client.PostAsJsonAsync("/sw-characters", character);
-        var addedCharacter2 = await responseAdd.Content.ReadFromJsonAsync<SwCharacter>();
+        var addedCharacter2 = await responseAdd2.Content.ReadFromJsonAsync<SwCharacter>();
 
         var response =  await client.GetAsync("/sw-characters");
         var characters = await response.Content.ReadFromJsonAsync<List<SwCharacter>>();
