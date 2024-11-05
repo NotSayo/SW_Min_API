@@ -6,15 +6,10 @@ using Xunit.Abstractions;
 
 namespace IntTests;
 
-public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+public class IntegrationTests(WebApplicationFactory<Program> factory, ITestOutputHelper output)
+    : IClassFixture<WebApplicationFactory<Program>>
 {
-    readonly WebApplicationFactory<Program> _factory;
-    readonly ITestOutputHelper _output; // For testing in console
-    public IntegrationTests(WebApplicationFactory<Program> factory, ITestOutputHelper output)
-    {
-        _factory = factory;
-        this._output = output;
-    }
+    readonly ITestOutputHelper _output = output; // For testing in console
 
     /*
      * The tests are seperated into 2 categories
@@ -31,7 +26,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T0_AddCharacter()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         var character = new SwCharacter()
         {
             Name = "Anakin Skywalker",
@@ -48,7 +43,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T0_GetCharacterById()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         SwCharacter? character = await GetOneCharacter(client);
         if (character is null)
         {
@@ -63,7 +58,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T0_GetAllCharacters()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         var response =  await client.GetAsync("/sw-characters");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
@@ -71,7 +66,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T0_AddAndGetACharacter()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         var responseCharacter = await client.GetAsync($"sw-characters/");
         SwCharacter? character;
         if(responseCharacter.StatusCode == HttpStatusCode.OK)
@@ -99,7 +94,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T0_UpdateCharacter()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         SwCharacter? character = await GetOneCharacter(client);
         if (character is null)
         {
@@ -125,7 +120,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T0_DeleteCharacter()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         SwCharacter? character = await GetOneCharacter(client);
         if (character is null)
         {
@@ -144,7 +139,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T1_AddAddGetRemoveAll()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         var character = new SwCharacter
         {
             Name = "Test",
@@ -178,7 +173,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T1_AddPutRemoveRemove()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         var character = new SwCharacter
         {
             Name = "Test",
@@ -214,7 +209,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T1_UpdateTwice()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         var character = new SwCharacter()
         {
             Name = "Test",
@@ -244,7 +239,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T1_AddTwice()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         await RemoveAllEntries(client);
         var character = new SwCharacter()
         {
@@ -268,7 +263,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T1_GetNonExistingCharacter()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         var response = await client.GetAsync($"/sw-characters/999999999");
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -276,7 +271,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T1_UpdateNonExistingCharacter()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         var response = await client.PutAsJsonAsync($"/sw-characters/999999999", new SwCharacter
         {
             Name = "Test",
@@ -290,7 +285,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T1_DeleteNonExistingCharacter()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         var response = await client.DeleteAsync($"/sw-characters/999999999");
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -298,7 +293,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T1_GetCharactersByParameters()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         await RemoveAllEntries(client);
         SwCharacter character = new SwCharacter()
         {
@@ -334,7 +329,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task T1_GetCharacterWithMixedParameters()
     {
-        var client = _factory.CreateClient();
+        var client = factory.CreateClient();
         await RemoveAllEntries(client);
 
         SwCharacter character = new SwCharacter()

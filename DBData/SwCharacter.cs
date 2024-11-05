@@ -5,6 +5,17 @@ namespace DBData;
 [Table("SW_CHARACTERS")]
 public class SwCharacter
 {
+    public SwCharacter()
+    {
+    }
+    public SwCharacter(string name, string faction, string homeworld, string species)
+    {
+        Name = name;
+        Faction = faction;
+        Homeworld = homeworld;
+        Species = species;
+    }
+
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     [Required]
@@ -15,13 +26,5 @@ public class SwCharacter
     public string Homeworld {get; set;}
     [Required]
     public string Species { get; set; }
-
-    public static SwCharacter Parse(string Name, string Faction, string Homewold, string Species) =>
-        new() {
-            Name = Name,
-            Faction = Faction,
-            Homeworld = Homewold,
-            Species = Species
-        };
 }
 

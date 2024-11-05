@@ -44,7 +44,7 @@ app.MapPost("/sw-characters", (SwRepository db, [FromBody] CharacterInput charac
 {
     if(string.IsNullOrWhiteSpace(characterId.Name) || string.IsNullOrWhiteSpace(characterId.Faction) || string.IsNullOrWhiteSpace(characterId.Homeworld) || string.IsNullOrWhiteSpace(characterId.Species))
         return Results.BadRequest("All fields must be filled");
-    var character = SwCharacter.Parse(characterId.Name, characterId.Faction, characterId.Homeworld, characterId.Species);
+    var character = new SwCharacter(characterId.Name, characterId.Faction, characterId.Homeworld, characterId.Species);
     db.AddCharacter(character);
     return Results.Created($"/sw-characters/{character.Id}", character);
 });
@@ -53,7 +53,7 @@ app.MapPut("/sw-characters/{id}", (SwRepository db, int id, [FromBody] Character
 {
     if(string.IsNullOrWhiteSpace(characterId.Name) || string.IsNullOrWhiteSpace(characterId.Faction) || string.IsNullOrWhiteSpace(characterId.Homeworld) || string.IsNullOrWhiteSpace(characterId.Species))
         return Results.BadRequest("All fields must be filled");
-    var character = SwCharacter.Parse(characterId.Name, characterId.Faction, characterId.Homeworld, characterId.Species);
+    var character = new SwCharacter(characterId.Name, characterId.Faction, characterId.Homeworld, characterId.Species);
     var result = db.ChangeCharacter(id, character);
     return result ? Results.Ok(db.GetCharacter(id)) : Results.NotFound();
 });
