@@ -1,0 +1,72 @@
+schema {
+  query: Query
+}
+
+type Query {
+  characters(where: SwCharacterFilterInput order: [SwCharacterSortInput!]): [SwCharacter!]!
+  characterById(id: Int!): SwCharacter
+}
+
+input SwCharacterFilterInput {
+  and: [SwCharacterFilterInput!]
+  or: [SwCharacterFilterInput!]
+  id: IntOperationFilterInput
+  name: StringOperationFilterInput
+  faction: StringOperationFilterInput
+  homeworld: StringOperationFilterInput
+  species: StringOperationFilterInput
+}
+
+input SwCharacterSortInput {
+  id: SortEnumType
+  name: SortEnumType
+  faction: SortEnumType
+  homeworld: SortEnumType
+  species: SortEnumType
+}
+
+input IntOperationFilterInput {
+  eq: Int
+  neq: Int
+  in: [Int]
+  nin: [Int]
+  gt: Int
+  ngt: Int
+  gte: Int
+  ngte: Int
+  lt: Int
+  nlt: Int
+  lte: Int
+  nlte: Int
+}
+
+input StringOperationFilterInput {
+  and: [StringOperationFilterInput!]
+  or: [StringOperationFilterInput!]
+  eq: String
+  neq: String
+  contains: String
+  ncontains: String
+  in: [String]
+  nin: [String]
+  startsWith: String
+  nstartsWith: String
+  endsWith: String
+  nendsWith: String
+}
+
+enum SortEnumType {
+  ASC
+  DESC
+}
+
+type SwCharacter {
+  id: Int!
+  name: String!
+  faction: String!
+  homeworld: String!
+  species: String!
+}
+
+"The purpose of the `cost` directive is to define a `weight` for GraphQL types, fields, and arguments. Static analysis can use these weights when calculating the overall cost of a query or response."
+directive @cost("The `weight` argument defines what value to add to the overall cost for every appearance, or possible appearance, of a type, field, argument, etc." weight: String!) on SCALAR | OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | ENUM | INPUT_FIELD_DEFINITION

@@ -1,0 +1,21 @@
+﻿@page "/"
+@inject SwClient client
+
+<PageTitle>Home</PageTitle>
+@if(_characters.Any()) {
+    @foreach(var character in _characters) {
+        <div>@character.Name</div>
+    }
+}
+
+@code {
+    public List<IGetCharacters_Characters> _characters = new List<IGetCharacters_Characters>();
+    protected async override Task OnInitializedAsync()
+    {
+        var result = await client.GetCharacters.ExecuteAsync();
+        _characters = result.Data.Characters.ToList();
+
+        base.OnInitialized();
+    }
+
+}

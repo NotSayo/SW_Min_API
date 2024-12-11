@@ -28,6 +28,7 @@ builder.Services.AddGraphQLServer()
     .AddFiltering()
     .AddSorting();
 
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -37,6 +38,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseHttpsRedirection();
+
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
 
 app.MapGet("/sw-characters", (SwRepository db, string name = "", string faction = "", string homeland = "", string species = "") =>
     db.GetCharacters(name, faction, homeland, species));
