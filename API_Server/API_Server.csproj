@@ -7,6 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="8.2.0" />
+        <PackageReference Include="HotChocolate.AspNetCore" Version="14.2.0" />
+        <PackageReference Include="HotChocolate.Data" Version="14.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
           <PrivateAssets>all</PrivateAssets>

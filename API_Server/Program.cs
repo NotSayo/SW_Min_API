@@ -1,4 +1,5 @@
 using System.Reflection;
+using API_Server.Queries;
 using Microsoft.EntityFrameworkCore;
 using DBData;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,12 @@ builder.Services.AddDbContext<SwContext>(options =>
         sqliteOptions.MigrationsAssembly(assembly.FullName);
     });
 });
+
+builder.Services.AddGraphQLServer()
+    .AddQueryType<Query>()
+    .AddProjections()
+    .AddFiltering()
+    .AddSorting();
 
 
 var app = builder.Build();
@@ -63,6 +70,8 @@ app.MapDelete("/sw-characters/{id}", (SwRepository db, int id) =>
     var result = db.DeleteCharacter(id);
     return result ? Results.Ok() : Results.NotFound();
 });
+
+app.MapGraphQL(path: "/graphql");
 
 
 app.Run();
