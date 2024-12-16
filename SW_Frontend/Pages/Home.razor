@@ -9,13 +9,13 @@
 }
 
 @code {
-    public List<IGetCharacters_Characters> _characters = new List<IGetCharacters_Characters>();
+    private List<IGetCharacters_Characters> _characters = new List<IGetCharacters_Characters>();
     protected async override Task OnInitializedAsync()
     {
         var result = await client.GetCharacters.ExecuteAsync();
         _characters = result.Data.Characters.ToList();
 
-        base.OnInitialized();
+        await base.OnInitializedAsync();
     }
 
 }

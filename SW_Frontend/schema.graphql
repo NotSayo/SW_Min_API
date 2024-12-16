@@ -1,10 +1,15 @@
 schema {
   query: Query
+  mutation: Mutation
 }
 
 type Query {
   characters(where: SwCharacterFilterInput order: [SwCharacterSortInput!]): [SwCharacter!]!
   characterById(id: Int!): SwCharacter
+}
+
+type Mutation {
+  addCharacter(character: CharacterInput!): SwCharacter!
 }
 
 input SwCharacterFilterInput {
@@ -58,6 +63,13 @@ input StringOperationFilterInput {
 enum SortEnumType {
   ASC
   DESC
+}
+
+input CharacterInput {
+  name: String!
+  faction: String!
+  homeworld: String!
+  species: String!
 }
 
 type SwCharacter {

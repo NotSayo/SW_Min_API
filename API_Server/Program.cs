@@ -26,7 +26,8 @@ builder.Services.AddGraphQLServer()
     .AddQueryType<Query>()
     .AddProjections()
     .AddFiltering()
-    .AddSorting();
+    .AddSorting()
+    .AddMutationType<Mutation>();
 
 builder.Services.AddCors();
 
@@ -85,7 +86,7 @@ app.Run();
 
 public partial class Program {}
 
-class CharacterInput
+public class CharacterInput
 {
     public string Name { get; set; } = "";
     public string Faction { get; set; } = "";

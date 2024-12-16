@@ -1,0 +1,41 @@
+﻿@page "/AddCharacterPage"
+@inject SwClient client
+<h3>AddCharacterPage</h3>
+
+<div>Name:</div>
+<InputText @bind-Value="@model.Name"></InputText>
+<div>Homeworld:</div>
+<InputText @bind-Value="@model.Homeworld"></InputText>
+<div>Faction:</div>
+<InputText @bind-Value="@model.Faction"></InputText>
+<div>Species:</div>
+<InputText @bind-Value="@model.Species"></InputText>
+
+<div>
+    <button @onclick="AddCharacter">AddCharacter</button>
+</div>
+
+
+@code {
+    private CharacterModel model { get; set; } = new CharacterModel();
+    private async Task AddCharacter()
+    {
+        await client.AddCharacter.ExecuteAsync(
+            new CharacterInput()
+            {
+                Name = model.Name,
+                Homeworld = model.Homeworld,
+                Faction = model.Faction,
+                Species = model.Species
+            });
+        model = new CharacterModel();
+    }
+
+    public class CharacterModel
+    {
+        public string Name { get; set; }
+        public string Homeworld { get; set; }
+        public string Faction { get; set; }
+        public string Species { get; set; }
+    }
+}

@@ -1,0 +1,8 @@
+﻿mutation AddCharacter($characterInput: CharacterInput!) {
+    addCharacter(character: $characterInput) {
+        name
+        faction
+        homeworld
+        species
+    }
+}
